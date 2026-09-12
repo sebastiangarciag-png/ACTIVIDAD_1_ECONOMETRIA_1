@@ -118,6 +118,12 @@ DATA_INGRESOS |>
   pull(deciles)
 
 
+## Número de personas por cada mes de antigüedad (P6426) -----
+tabla_meses <- DATA_INGRESOS |> 
+  dplyr::filter(!is.na(P6426)) |> 
+  dplyr::count(P6426) |> 
+  dplyr::arrange(P6426)
 
+tabla_meses
 
 
