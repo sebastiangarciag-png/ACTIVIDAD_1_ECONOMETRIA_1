@@ -127,3 +127,18 @@ tabla_meses <- DATA_INGRESOS |>
 tabla_meses
 
 
+## Número de personas según su posición respecto a Q1, Q3 e IQR (P6426) -----
+DATA_INGRESOS |> 
+  dplyr::filter(!is.na(P6426)) |> 
+  dplyr::mutate(grupo = dplyr::case_when(
+    P6426 < 9 ~ "Por debajo de Q1 (< 9 meses)",
+    P6426 >= 9 & P6426 <= 84 ~ "Dentro del rango intercuartílico (9 a 84 meses)",
+    P6426 > 84 ~ "Por encima de Q3 (> 84 meses)"
+  )) |> 
+  dplyr::count(grupo)
+
+
+
+
+
+
