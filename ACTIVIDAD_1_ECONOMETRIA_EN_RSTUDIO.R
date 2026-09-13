@@ -137,6 +137,53 @@ DATA_INGRESOS |>
   )) |> 
   dplyr::count(grupo)
 
+## Punto 2: Relación entre ingreso laboral (INGLABO) y experiencia laboral (P6426) -----
+
+DATA_P2 <- DATA_INGRESOS |> 
+  dplyr::filter(!is.na(INGLABO), !is.na(P6426))
+
+## Correlación entre INGLABO y P6426 -----
+correlacion_ing_exp <- cor(DATA_P2$INGLABO, DATA_P2$P6426)
+correlacion_ing_exp
+
+## Scatterplot: ingreso laboral vs experiencia laboral -----
+plot(DATA_P2$P6426, DATA_P2$INGLABO,
+     xlab = "Experiencia laboral (meses en el empleo actual)",
+     ylab = "Ingreso laboral",
+     main = "Relación entre ingreso laboral y experiencia laboral",
+     col = "steelblue", pch = 16)
+
+
+## Métricas descriptivas conjuntas -----
+DATA_P2 |> 
+  dplyr::summarise(
+    n = dplyr::n(),
+    correlacion = cor(INGLABO, P6426),
+    media_INGLABO = mean(INGLABO),
+    media_P6426 = mean(P6426),
+    sd_INGLABO = sd(INGLABO),
+    sd_P6426 = sd(P6426)
+  )
+
+
+## Diferencia de medias de ingreso laboral entre ciudades -----
+DATA_P2 |> 
+  dplyr::filter(AREA %in% c(63, 17, 66)) |> 
+  dplyr::mutate(Ciudad = dplyr::case_when(
+    AREA == 63 ~ "Armenia",
+    AREA == 17 ~ "Manizales",
+    AREA == 66 ~ "Pereira"
+  )) |> 
+  dplyr::group_by(Ciudad) |> 
+  dplyr::summarise(
+    media_ingreso = mean(INGLABO),
+    mediana_ingreso = median(INGLABO),
+    n_personas = dplyr::n()
+  )
+
+
+
+
 
 
 
